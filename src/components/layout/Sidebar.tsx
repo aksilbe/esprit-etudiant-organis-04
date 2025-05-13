@@ -4,6 +4,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Calendar, CheckSquare, LayoutDashboard, Settings, Clock } from 'lucide-react';
+import { Logo } from '@/components/Logo';
 
 export const Sidebar: React.FC = () => {
   const { t } = useLanguage();
@@ -42,8 +43,10 @@ export const Sidebar: React.FC = () => {
       id="app-sidebar"
       className="hidden md:flex flex-col w-64 bg-sidebar border-r"
     >
-      <div className="p-4">
-        <h1 className="text-2xl font-bold text-primary">{t('app.title')}</h1>
+      <div className="p-4 flex justify-center items-center">
+        <Link to="/" className="inline-block">
+          <Logo />
+        </Link>
       </div>
       <nav className="flex-1 overflow-y-auto p-2">
         {navigation.map((item) => (
