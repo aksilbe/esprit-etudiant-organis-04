@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { DataProvider } from "@/contexts/DataContext";
 import { AppLayout } from "@/components/layout/AppLayout";
-import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "@/pages/Dashboard";
 import TasksPage from "@/pages/TasksPage";
 import CalendarPage from "@/pages/CalendarPage";
@@ -17,35 +17,26 @@ import NotFound from "@/pages/NotFound";
 const queryClient = new QueryClient();
 
 const App = () => {
-  const [currentPage, setCurrentPage] = useState<string>("dashboard");
-
-  const renderCurrentPage = () => {
-    switch (currentPage) {
-      case "dashboard":
-        return <Dashboard />;
-      case "tasks":
-        return <TasksPage />;
-      case "calendar":
-        return <CalendarPage />;
-      case "pomodoro":
-        return <PomodoroPage />;
-      case "settings":
-        return <SettingsPage />;
-      default:
-        return <NotFound />;
-    }
-  };
-
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
         <DataProvider>
           <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <AppLayout currentPage={currentPage} setCurrentPage={setCurrentPage}>
-              {renderCurrentPage()}
-            </AppLayout>
+            <Router>
+              <Toaster />
+              <Sonner />
+              <AppLayout>
+                <Routes>
+                  <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/tasks" element={<TasksPage />} />
+                  <Route path="/calendar" element={<CalendarPage />} />
+                  <Route path="/pomodoro" element={<PomodoroPage />} />
+                  <Route path="/settings" element={<SettingsPage />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </AppLayout>
+            </Router>
           </TooltipProvider>
         </DataProvider>
       </LanguageProvider>
