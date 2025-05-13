@@ -44,9 +44,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage, setCurrentPage })
   return (
     <aside
       id="app-sidebar"
-      className="hidden md:flex flex-col w-64 bg-gradient-to-b from-slate-800 to-slate-900 backdrop-blur-sm border-r border-slate-700/50 shadow-xl"
+      className="hidden md:flex flex-col w-64 bg-gradient-to-b from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 backdrop-blur-sm border-r border-slate-200/50 dark:border-slate-700/50 shadow-lg"
     >
-      <div className="p-6 flex justify-center items-center border-b border-slate-700/50">
+      <div className="p-6 flex justify-center items-center border-b border-slate-200/50 dark:border-slate-700/50">
         <button 
           onClick={() => setCurrentPage("dashboard")} 
           className="inline-block transition-transform hover:scale-105"
@@ -63,7 +63,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage, setCurrentPage })
               'flex items-center gap-3 px-3 py-3 rounded-lg my-1.5 font-medium w-full transition-all duration-200',
               currentPage === item.id
                 ? 'bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-lg'
-                : 'hover:bg-white/10 hover:text-white text-slate-300'
+                : 'hover:bg-white/50 hover:text-slate-800 text-slate-600 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white'
             )}
           >
             <item.icon className="h-5 w-5" />
