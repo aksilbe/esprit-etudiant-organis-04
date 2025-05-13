@@ -42,7 +42,7 @@ export const EventForm: React.FC<EventFormProps> = ({ onClose, eventId }) => {
   
   const existingEvent = eventId ? state.events.find(event => event.id === eventId) : null;
   
-  const { register, handleSubmit, control, formState: { errors } } = useForm<FormData>({
+  const { register, handleSubmit, control, setValue, watch } = useForm<FormData>({
     defaultValues: existingEvent
       ? {
           title: existingEvent.title,
@@ -63,6 +63,8 @@ export const EventForm: React.FC<EventFormProps> = ({ onClose, eventId }) => {
           color: '#3B82F6',
         },
   });
+  
+  const currentColor = watch('color');
   
   const onSubmit = (data: FormData) => {
     if (existingEvent) {
@@ -185,10 +187,10 @@ export const EventForm: React.FC<EventFormProps> = ({ onClose, eventId }) => {
               key={color} 
               className={cn(
                 'h-8 w-8 rounded-full cursor-pointer transition-all',
-                control._formValues.color === color ? 'ring-2 ring-offset-2 ring-primary' : ''
+                currentColor === color ? 'ring-2 ring-offset-2 ring-primary' : ''
               )}
               style={{ backgroundColor: color }}
-              onClick={() => control._setValue('color', color, { shouldValidate: true })}
+              onClick={() => setValue('color', color, { shouldValidate: true })}
             />
           ))}
           <Input
