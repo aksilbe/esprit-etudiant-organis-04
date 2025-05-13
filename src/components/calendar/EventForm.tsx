@@ -42,7 +42,7 @@ export const EventForm: React.FC<EventFormProps> = ({ onClose, eventId }) => {
   
   const existingEvent = eventId ? state.events.find(event => event.id === eventId) : null;
   
-  const { register, handleSubmit, control, setValue, watch } = useForm<FormData>({
+  const { register, handleSubmit, control, setValue, watch, formState: { errors } } = useForm<FormData>({
     defaultValues: existingEvent
       ? {
           title: existingEvent.title,
