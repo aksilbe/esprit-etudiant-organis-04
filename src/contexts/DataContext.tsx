@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useEffect, useReducer } from 'react';
 import { Task, Event, Category, TaskFilter } from '@/types';
 
@@ -294,16 +293,22 @@ const initialState: State = {
   taskFilter: 'all',
 };
 
+// Le problème vient potentiellement de cette fonction, 
+// où les données initiales pourraient être écrasées.
+// Modifions-la pour conserver les données initiales si aucune donnée n'est en localStorage
 const loadState = (): State => {
   try {
     const serializedTasks = localStorage.getItem('tasks');
     const serializedEvents = localStorage.getItem('events');
+    
+    // On utilise les données initiales si rien n'est stocké en localStorage
     return {
       ...initialState,
       tasks: serializedTasks ? JSON.parse(serializedTasks) : initialState.tasks,
       events: serializedEvents ? JSON.parse(serializedEvents) : initialState.events,
     };
   } catch (err) {
+    console.error('Error loading state from localStorage, using initial state', err);
     return initialState;
   }
 };
@@ -374,6 +379,18 @@ const DataContext = createContext<DataContextType | undefined>(undefined);
 
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, loadState());
+
+  // Ajoutons un useEffect pour initialiser le localStorage avec les données initiales si nécessaire
+  useEffect(() => {
+    // Si le localStorage est vide, sauvegardons l'état initial
+    const tasksInStorage = localStorage.getItem('tasks');
+    const eventsInStorage = localStorage.getItem('events');
+    
+    if (!tasksInStorage || !eventsInStorage) {
+      console.log('Initializing localStorage with default data');
+      saveState(state);
+    }
+  }, []);
 
   useEffect(() => {
     saveState(state);
