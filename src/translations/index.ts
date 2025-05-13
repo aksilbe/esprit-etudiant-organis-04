@@ -1,8 +1,7 @@
-
 export const translations = {
   fr: {
     app: {
-      title: "OrganizÉtudes",
+      title: "aksilflow",
       dashboard: "Tableau de bord",
       tasks: "Tâches",
       calendar: "Calendrier",
@@ -151,7 +150,7 @@ export const translations = {
   },
   en: {
     app: {
-      title: "StudyOrganizer",
+      title: "aksilflow",
       dashboard: "Dashboard",
       tasks: "Tasks",
       calendar: "Calendar",
@@ -300,7 +299,7 @@ export const translations = {
   },
   es: {
     app: {
-      title: "OrganizEstudio",
+      title: "aksilflow",
       dashboard: "Tablero",
       tasks: "Tareas",
       calendar: "Calendario",

@@ -12,6 +12,7 @@ export const Logo: React.FC = () => {
         </div>
         <div className="absolute -top-1 -right-1.5 h-3 w-3 bg-yellow-400 rounded-full animate-pulse opacity-90 shadow-sm shadow-yellow-300"></div>
       </div>
+      <span className="ml-3 text-2xl font-bold bg-gradient-to-r from-red-500 to-purple-600 bg-clip-text text-transparent">aksilflow</span>
     </div>
   );
 };
