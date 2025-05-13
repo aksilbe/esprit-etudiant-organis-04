@@ -79,7 +79,11 @@ export const EventForm: React.FC<EventFormProps> = ({ onClose, eventId }) => {
         color: data.color,
       });
     } else {
+      // Generate a unique ID for new events
+      const newId = `event_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+      
       addEvent({
+        id: newId,
         title: data.title,
         description: data.description,
         date: data.date.toISOString(),

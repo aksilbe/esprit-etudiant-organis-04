@@ -71,13 +71,19 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onClose, taskId }) => {
         category: data.category,
       });
     } else {
+      // Generate unique ID and current timestamp for new tasks
+      const newId = `task_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+      const currentTimestamp = new Date().toISOString();
+      
       addTask({
+        id: newId,
         title: data.title,
         description: data.description,
         dueDate: data.dueDate.toISOString(),
         priority: data.priority,
         category: data.category,
         completed: false,
+        createdAt: currentTimestamp
       });
     }
     onClose();
