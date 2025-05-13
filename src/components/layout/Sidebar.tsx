@@ -42,7 +42,7 @@ export const Sidebar: React.FC = () => {
   return (
     <aside
       id="app-sidebar"
-      className="hidden md:flex flex-col w-64 bg-gradient-to-b from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 backdrop-blur-sm border-r border-slate-200/50 dark:border-slate-700/50 shadow-lg"
+      className="h-screen w-64 bg-gradient-to-b from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 backdrop-blur-sm border-r border-slate-200/50 dark:border-slate-700/50 shadow-lg overflow-y-auto"
     >
       <div className="p-6 flex justify-center items-center border-b border-slate-200/50 dark:border-slate-700/50">
         <Link to="/dashboard" className="inline-block transition-transform hover:scale-105">

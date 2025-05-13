@@ -755,6 +755,7 @@ type DataContextType = {
   updateEvent: (event: Event) => void;
   deleteEvent: (id: string) => void;
   setTaskFilter: (filter: TaskFilter) => void;
+  toggleTaskCompletion: (id: string) => void;
 };
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -780,6 +781,14 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const deleteTask = (id: string) => {
     dispatch({ type: 'DELETE_TASK', payload: id });
+  };
+
+  const toggleTaskCompletion = (id: string) => {
+    const task = state.tasks.find(t => t.id === id);
+    if (task) {
+      const updatedTask = { ...task, completed: !task.completed };
+      updateTask(updatedTask);
+    }
   };
 
   const setEvents = (events: Event[]) => {
@@ -814,7 +823,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         addEvent,
         updateEvent,
         deleteEvent,
-        setTaskFilter
+        setTaskFilter,
+        toggleTaskCompletion
       }}
     >
       {children}
