@@ -17,7 +17,7 @@ export const Header: React.FC = () => {
   };
   
   return (
-    <header className="bg-background border-b p-4 flex items-center justify-between">
+    <header className="bg-white/70 dark:bg-slate-800/70 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 p-4 flex items-center justify-between shadow-sm">
       <Button
         variant="ghost"
         size="icon"

@@ -98,7 +98,7 @@
 
 @layer utilities {
   .glass-card {
-    @apply bg-white/50 backdrop-blur-sm border border-white/20 shadow-lg;
+    @apply bg-white/70 backdrop-blur-sm border border-white/20 shadow-lg;
   }
   
   .glass-dark {
@@ -158,4 +158,19 @@
 
 .animate-soft-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Card styles */
+.app-card {
+  @apply bg-white dark:bg-slate-800 rounded-xl p-5 shadow-md border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-shadow duration-300;
+}
+
+/* Button animations */
+.btn-hover-effect {
+  @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg;
+}
+
+/* Gradient text */
+.gradient-text {
+  @apply bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent;
 }
