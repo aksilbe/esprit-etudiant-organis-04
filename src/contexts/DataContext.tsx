@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useEffect, useReducer } from 'react';
 import { Task, Event, Category, TaskFilter } from '@/types';
 
@@ -73,12 +74,12 @@ const initialState: State = {
     }
   ],
   events: [
-    // Jour 2 (13 mai)
+    // Jour 1 (12 mai - Monday)
     {
       id: '1',
       title: 'Multisports 5 avec DEPANI.M.',
       description: 'ASC501-01 en GYM',
-      date: '2025-05-13T08:25:00.000Z',
+      date: '2025-05-12T08:25:00.000Z',
       startTime: '08:25',
       endTime: '09:40',
       location: 'GYM',
@@ -88,7 +89,7 @@ const initialState: State = {
       id: '2',
       title: 'Histoire du OC.& du avec APRIL.G.',
       description: '085401-07 en N208',
-      date: '2025-05-13T09:47:00.000Z',
+      date: '2025-05-12T09:47:00.000Z',
       startTime: '09:47',
       endTime: '11:02',
       location: 'N208',
@@ -98,7 +99,7 @@ const initialState: State = {
       id: '3',
       title: 'Français 5 Régulier avec CLERMONT.V.',
       description: '132501-04 en N335',
-      date: '2025-05-13T11:09:00.000Z',
+      date: '2025-05-12T11:09:00.000Z',
       startTime: '11:09',
       endTime: '12:24',
       location: 'N335',
@@ -108,19 +109,19 @@ const initialState: State = {
       id: '4',
       title: 'Culture/citoyenneté avec JOSEPH.C.',
       description: '080501-03 en S445',
-      date: '2025-05-13T13:53:00.000Z',
+      date: '2025-05-12T13:53:00.000Z',
       startTime: '13:53',
       endTime: '15:08',
       location: 'S445',
       color: '#F59E0B'
     },
 
-    // Jour 3 (16 mai)
+    // Jour 2 (13 mai - Tuesday)
     {
       id: '5',
       title: 'Ed.phys.(gym)-Reg avec SOURROUBILLE.I.',
       description: '043501-04 en GYM',
-      date: '2025-05-16T08:25:00.000Z',
+      date: '2025-05-13T08:25:00.000Z',
       startTime: '08:25',
       endTime: '09:40',
       location: 'GYM',
@@ -130,7 +131,7 @@ const initialState: State = {
       id: '6',
       title: 'Multisports 5 avec DEPANI.M.',
       description: 'ASC501-01 en GYM',
-      date: '2025-05-16T09:47:00.000Z',
+      date: '2025-05-13T09:47:00.000Z',
       startTime: '09:47',
       endTime: '11:02',
       location: 'GYM',
@@ -140,7 +141,7 @@ const initialState: State = {
       id: '7',
       title: 'Éducation financière avec BENOIT.R.',
       description: '102501-08 en N208',
-      date: '2025-05-16T11:09:00.000Z',
+      date: '2025-05-13T11:09:00.000Z',
       startTime: '11:09',
       endTime: '12:24',
       location: 'N208',
@@ -150,19 +151,19 @@ const initialState: State = {
       id: '8',
       title: 'Français 5 Régulier avec CLERMONT.V.',
       description: '132501-04 en N335',
-      date: '2025-05-16T13:53:00.000Z',
+      date: '2025-05-13T13:53:00.000Z',
       startTime: '13:53',
       endTime: '15:08',
       location: 'N335',
       color: '#8B5CF6'
     },
     
-    // Jour 4 (17 mai)
+    // Jour 3 (14 mai - Wednesday)
     {
       id: '9',
       title: 'Math. 5 CST avec SAUMURE.M.',
       description: '063501-05 en N330',
-      date: '2025-05-17T08:25:00.000Z',
+      date: '2025-05-14T08:25:00.000Z',
       startTime: '08:25',
       endTime: '09:40',
       location: 'N330',
@@ -172,7 +173,7 @@ const initialState: State = {
       id: '10',
       title: 'Math. 5 CST avec SAUMURE.M.',
       description: '063501-05 en N330',
-      date: '2025-05-17T09:47:00.000Z',
+      date: '2025-05-14T09:47:00.000Z',
       startTime: '09:47',
       endTime: '11:02',
       location: 'N330',
@@ -182,7 +183,7 @@ const initialState: State = {
       id: '11',
       title: 'Histoire du OC.& du avec APRIL.G.',
       description: '085401-07 en N208',
-      date: '2025-05-17T11:09:00.000Z',
+      date: '2025-05-14T11:09:00.000Z',
       startTime: '11:09',
       endTime: '12:24',
       location: 'N208',
@@ -192,19 +193,19 @@ const initialState: State = {
       id: '12',
       title: 'Français 5 Régulier avec CLERMONT.V.',
       description: '132501-04 en N335',
-      date: '2025-05-17T13:53:00.000Z',
+      date: '2025-05-14T13:53:00.000Z',
       startTime: '13:53',
       endTime: '15:08',
       location: 'N335',
       color: '#8B5CF6'
     },
     
-    // Jour 5 (18 mai)
+    // Jour 4 (15 mai - Thursday)
     {
       id: '13',
       title: 'Anglais 5 Régulier avec STAIT.J.',
       description: '134501-07 en S415',
-      date: '2025-05-18T08:25:00.000Z',
+      date: '2025-05-15T08:25:00.000Z',
       startTime: '08:25',
       endTime: '09:40',
       location: 'S415',
@@ -214,7 +215,7 @@ const initialState: State = {
       id: '14',
       title: 'Anglais 5 Régulier avec STAIT.J.',
       description: '134501-07 en S415',
-      date: '2025-05-18T09:47:00.000Z',
+      date: '2025-05-15T09:47:00.000Z',
       startTime: '09:47',
       endTime: '11:02',
       location: 'S415',
@@ -224,7 +225,7 @@ const initialState: State = {
       id: '15',
       title: 'Multisports 5 avec DEPANI.M.',
       description: 'ASC501-01 en GYM',
-      date: '2025-05-18T11:09:00.000Z',
+      date: '2025-05-15T11:09:00.000Z',
       startTime: '11:09',
       endTime: '12:24',
       location: 'GYM',
@@ -234,19 +235,19 @@ const initialState: State = {
       id: '16',
       title: 'M/Cont./Ed.Fin. 5 avec BENOIT.R.',
       description: '092501-08 en N208',
-      date: '2025-05-18T13:53:00.000Z',
+      date: '2025-05-15T13:53:00.000Z',
       startTime: '13:53',
       endTime: '15:08',
       location: 'N208',
       color: '#6B7280'
     },
     
-    // Jour 6 (19 mai)
+    // Jour 5 (16 mai - Friday)
     {
       id: '17',
       title: 'Arts Plast. 5 Réguli avec VEZEAU-CROTEAU.K.',
       description: '168501-05 en N119',
-      date: '2025-05-19T08:25:00.000Z',
+      date: '2025-05-16T08:25:00.000Z',
       startTime: '08:25',
       endTime: '09:40',
       location: 'N119',
@@ -256,7 +257,7 @@ const initialState: State = {
       id: '18',
       title: 'Culture/citoyenneté avec JOSEPH.C.',
       description: '080501-03 en S445',
-      date: '2025-05-19T09:47:00.000Z',
+      date: '2025-05-16T09:47:00.000Z',
       startTime: '09:47',
       endTime: '11:02',
       location: 'S445',
@@ -266,7 +267,7 @@ const initialState: State = {
       id: '19',
       title: 'Ed.phys.(gym)-Reg avec SOURROUBILLE.I.',
       description: '043501-04 en GYM',
-      date: '2025-05-19T11:09:00.000Z',
+      date: '2025-05-16T11:09:00.000Z',
       startTime: '11:09',
       endTime: '12:24',
       location: 'GYM',
@@ -276,7 +277,7 @@ const initialState: State = {
       id: '20',
       title: 'Histoire du OC.& du avec APRIL.G.',
       description: '085401-07 en N208',
-      date: '2025-05-19T13:53:00.000Z',
+      date: '2025-05-16T13:53:00.000Z',
       startTime: '13:53',
       endTime: '15:08',
       location: 'N208',
