@@ -57,6 +57,10 @@ function Calendar({
         IconRight: ({ ..._props }) => <ChevronRight className="h-4 w-4" />,
       }}
       weekStartsOn={1}
+      modifiersClassNames={{
+        selected: "bg-primary text-primary-foreground",
+        today: "bg-accent text-accent-foreground",
+      }}
       {...props}
     />
   );
