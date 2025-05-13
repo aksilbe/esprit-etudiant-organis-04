@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useEffect, useReducer } from 'react';
 import { Task, Event, Category, TaskFilter } from '@/types';
 
@@ -674,4 +675,157 @@ const initialState: State = {
 };
 
 // On simplifie cette fonction pour toujours utiliser les données initiales au premier chargement
-const loadState = (): State =>
+const loadState = (): State => {
+  return initialState;
+};
+
+const saveState = (state: State): void => {
+  try {
+    const serializedState = JSON.stringify(state);
+    localStorage.setItem('appState', serializedState);
+  } catch (err) {
+    console.error('Could not save state', err);
+  }
+};
+
+const reducer = (state: State, action: Action): State => {
+  switch (action.type) {
+    case 'SET_TASKS':
+      return {
+        ...state,
+        tasks: action.payload
+      };
+    case 'ADD_TASK':
+      return {
+        ...state,
+        tasks: [...state.tasks, action.payload]
+      };
+    case 'UPDATE_TASK':
+      return {
+        ...state,
+        tasks: state.tasks.map(task =>
+          task.id === action.payload.id ? action.payload : task
+        )
+      };
+    case 'DELETE_TASK':
+      return {
+        ...state,
+        tasks: state.tasks.filter(task => task.id !== action.payload)
+      };
+    case 'SET_EVENTS':
+      return {
+        ...state,
+        events: action.payload
+      };
+    case 'ADD_EVENT':
+      return {
+        ...state,
+        events: [...state.events, action.payload]
+      };
+    case 'UPDATE_EVENT':
+      return {
+        ...state,
+        events: state.events.map(event =>
+          event.id === action.payload.id ? action.payload : event
+        )
+      };
+    case 'DELETE_EVENT':
+      return {
+        ...state,
+        events: state.events.filter(event => event.id !== action.payload)
+      };
+    case 'SET_TASK_FILTER':
+      return {
+        ...state,
+        taskFilter: action.payload
+      };
+    default:
+      return state;
+  }
+};
+
+type DataContextType = {
+  state: State;
+  setTasks: (tasks: Task[]) => void;
+  addTask: (task: Task) => void;
+  updateTask: (task: Task) => void;
+  deleteTask: (id: string) => void;
+  setEvents: (events: Event[]) => void;
+  addEvent: (event: Event) => void;
+  updateEvent: (event: Event) => void;
+  deleteEvent: (id: string) => void;
+  setTaskFilter: (filter: TaskFilter) => void;
+};
+
+const DataContext = createContext<DataContextType | undefined>(undefined);
+
+export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, loadState());
+
+  useEffect(() => {
+    saveState(state);
+  }, [state]);
+
+  const setTasks = (tasks: Task[]) => {
+    dispatch({ type: 'SET_TASKS', payload: tasks });
+  };
+
+  const addTask = (task: Task) => {
+    dispatch({ type: 'ADD_TASK', payload: task });
+  };
+
+  const updateTask = (task: Task) => {
+    dispatch({ type: 'UPDATE_TASK', payload: task });
+  };
+
+  const deleteTask = (id: string) => {
+    dispatch({ type: 'DELETE_TASK', payload: id });
+  };
+
+  const setEvents = (events: Event[]) => {
+    dispatch({ type: 'SET_EVENTS', payload: events });
+  };
+
+  const addEvent = (event: Event) => {
+    dispatch({ type: 'ADD_EVENT', payload: event });
+  };
+
+  const updateEvent = (event: Event) => {
+    dispatch({ type: 'UPDATE_EVENT', payload: event });
+  };
+
+  const deleteEvent = (id: string) => {
+    dispatch({ type: 'DELETE_EVENT', payload: id });
+  };
+
+  const setTaskFilter = (filter: TaskFilter) => {
+    dispatch({ type: 'SET_TASK_FILTER', payload: filter });
+  };
+
+  return (
+    <DataContext.Provider
+      value={{
+        state,
+        setTasks,
+        addTask,
+        updateTask,
+        deleteTask,
+        setEvents,
+        addEvent,
+        updateEvent,
+        deleteEvent,
+        setTaskFilter
+      }}
+    >
+      {children}
+    </DataContext.Provider>
+  );
+};
+
+export const useData = (): DataContextType => {
+  const context = useContext(DataContext);
+  if (context === undefined) {
+    throw new Error('useData must be used within a DataProvider');
+  }
+  return context;
+};
