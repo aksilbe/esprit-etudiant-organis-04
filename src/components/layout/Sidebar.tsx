@@ -1,39 +1,42 @@
 
 import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Calendar, CheckSquare, LayoutDashboard, Settings, Clock } from 'lucide-react';
 import { Logo } from '@/components/Logo';
 
-export const Sidebar: React.FC = () => {
+interface SidebarProps {
+  currentPage: string;
+  setCurrentPage: (page: string) => void;
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({ currentPage, setCurrentPage }) => {
   const { t } = useLanguage();
-  const location = useLocation();
   
   const navigation = [
     {
       name: t('app.dashboard'),
-      href: '/',
+      id: "dashboard",
       icon: LayoutDashboard,
     },
     {
       name: t('app.tasks'),
-      href: '/tasks',
+      id: "tasks",
       icon: CheckSquare,
     },
     {
       name: t('app.calendar'),
-      href: '/calendar',
+      id: "calendar",
       icon: Calendar,
     },
     {
       name: t('app.pomodoro'),
-      href: '/pomodoro',
+      id: "pomodoro",
       icon: Clock,
     },
     {
       name: t('app.settings'),
-      href: '/settings',
+      id: "settings",
       icon: Settings,
     },
   ];
@@ -41,28 +44,31 @@ export const Sidebar: React.FC = () => {
   return (
     <aside
       id="app-sidebar"
-      className="hidden md:flex flex-col w-64 bg-sidebar border-r"
+      className="hidden md:flex flex-col w-64 bg-sidebar/90 backdrop-blur-sm border-r border-sidebar-border shadow-lg"
     >
-      <div className="p-4 flex justify-center items-center">
-        <Link to="/" className="inline-block">
+      <div className="p-6 flex justify-center items-center border-b border-sidebar-border">
+        <button 
+          onClick={() => setCurrentPage("dashboard")} 
+          className="inline-block transition-transform hover:scale-105"
+        >
           <Logo />
-        </Link>
+        </button>
       </div>
-      <nav className="flex-1 overflow-y-auto p-2">
+      <nav className="flex-1 overflow-y-auto p-3">
         {navigation.map((item) => (
-          <Link
+          <button
             key={item.name}
-            to={item.href}
+            onClick={() => setCurrentPage(item.id)}
             className={cn(
-              'flex items-center gap-3 px-3 py-2 rounded-lg my-1 font-medium',
-              location.pathname === item.href
-                ? 'bg-primary text-primary-foreground'
-                : 'hover:bg-muted'
+              'flex items-center gap-3 px-3 py-2.5 rounded-lg my-1.5 font-medium w-full transition-all duration-200',
+              currentPage === item.id
+                ? 'bg-primary text-primary-foreground shadow-md'
+                : 'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
             )}
           >
             <item.icon className="h-5 w-5" />
             <span>{item.name}</span>
-          </Link>
+          </button>
         ))}
       </nav>
     </aside>

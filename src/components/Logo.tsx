@@ -4,27 +4,21 @@ import React from 'react';
 export const Logo: React.FC = () => {
   return (
     <div className="flex items-center justify-center">
-      <div className="relative inline-flex">
-        <span className="text-4xl font-extrabold text-primary leading-none tracking-tighter">100</span>
-        <svg
-          className="absolute -top-2 -right-3 h-4 w-4 text-red-500"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-        >
-          <circle cx="10" cy="10" r="8" />
-        </svg>
+      <div className="relative inline-block">
+        <div className="relative z-10">
+          <span className="text-5xl font-extrabold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent leading-none tracking-tighter">100</span>
+        </div>
+        <div className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-red-500 border-2 border-white shadow-md" />
         <svg 
-          className="absolute -top-1 -left-2 w-6 h-6 text-primary-foreground" 
-          width="24" 
-          height="24" 
+          className="absolute -top-1.5 -left-3 w-6 h-6 text-accent" 
           viewBox="0 0 24 24" 
           fill="none" 
           stroke="currentColor" 
-          strokeWidth="2"
+          strokeWidth="3"
+          strokeLinecap="round" 
+          strokeLinejoin="round"
         >
-          <path d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2Z" />
-          <path d="M15 9L9 15" />
-          <path d="M9 9L15 15" />
+          <path d="M9 12l2 2 4-4" />
         </svg>
       </div>
     </div>

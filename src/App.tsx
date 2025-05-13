@@ -3,10 +3,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { DataProvider } from "@/contexts/DataContext";
 import { AppLayout } from "@/components/layout/AppLayout";
+import { useState } from "react";
 import Dashboard from "@/pages/Dashboard";
 import TasksPage from "@/pages/TasksPage";
 import CalendarPage from "@/pages/CalendarPage";
@@ -16,62 +16,41 @@ import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <LanguageProvider>
-      <DataProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route 
-                path="/" 
-                element={
-                  <AppLayout>
-                    <Dashboard />
-                  </AppLayout>
-                } 
-              />
-              <Route 
-                path="/tasks" 
-                element={
-                  <AppLayout>
-                    <TasksPage />
-                  </AppLayout>
-                } 
-              />
-              <Route 
-                path="/calendar" 
-                element={
-                  <AppLayout>
-                    <CalendarPage />
-                  </AppLayout>
-                } 
-              />
-              <Route 
-                path="/pomodoro" 
-                element={
-                  <AppLayout>
-                    <PomodoroPage />
-                  </AppLayout>
-                } 
-              />
-              <Route 
-                path="/settings" 
-                element={
-                  <AppLayout>
-                    <SettingsPage />
-                  </AppLayout>
-                } 
-              />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </DataProvider>
-    </LanguageProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  const [currentPage, setCurrentPage] = useState<string>("dashboard");
+
+  const renderCurrentPage = () => {
+    switch (currentPage) {
+      case "dashboard":
+        return <Dashboard />;
+      case "tasks":
+        return <TasksPage />;
+      case "calendar":
+        return <CalendarPage />;
+      case "pomodoro":
+        return <PomodoroPage />;
+      case "settings":
+        return <SettingsPage />;
+      default:
+        return <NotFound />;
+    }
+  };
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <LanguageProvider>
+        <DataProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <AppLayout currentPage={currentPage} setCurrentPage={setCurrentPage}>
+              {renderCurrentPage()}
+            </AppLayout>
+          </TooltipProvider>
+        </DataProvider>
+      </LanguageProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

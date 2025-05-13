@@ -69,6 +69,11 @@ export default {
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
 			},
+			boxShadow: {
+				'soft': '0 2px 10px rgba(0, 0, 0, 0.05)',
+				'soft-lg': '0 10px 30px -3px rgba(0, 0, 0, 0.05)',
+				'card-hover': '0 10px 30px -3px rgba(0, 0, 0, 0.1)'
+			},
 			keyframes: {
 				'accordion-down': {
 					from: {
