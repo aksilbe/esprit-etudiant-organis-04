@@ -136,6 +136,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onClose, taskId }) => {
                   onSelect={field.onChange}
                   initialFocus
                   locale={currentLocale}
+                  weekStartsOn={1}
                   className={cn("p-3 pointer-events-auto")}
                 />
               </PopoverContent>

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useData } from '@/contexts/DataContext';
@@ -39,8 +38,8 @@ const CalendarPage: React.FC = () => {
       case 'month': {
         const monthStart = startOfMonth(currentDate);
         const monthEnd = endOfMonth(currentDate);
-        const calendarStart = startOfWeek(monthStart, { locale: currentLocale });
-        const calendarEnd = endOfWeek(monthEnd, { locale: currentLocale });
+        const calendarStart = startOfWeek(monthStart, { locale: currentLocale, weekStartsOn: 1 });
+        const calendarEnd = endOfWeek(monthEnd, { locale: currentLocale, weekStartsOn: 1 });
         
         return eachDayOfInterval({
           start: calendarStart,
@@ -48,8 +47,8 @@ const CalendarPage: React.FC = () => {
         });
       }
       case 'week': {
-        const weekStart = startOfWeek(currentDate, { locale: currentLocale });
-        const weekEnd = endOfWeek(currentDate, { locale: currentLocale });
+        const weekStart = startOfWeek(currentDate, { locale: currentLocale, weekStartsOn: 1 });
+        const weekEnd = endOfWeek(currentDate, { locale: currentLocale, weekStartsOn: 1 });
         
         return eachDayOfInterval({
           start: weekStart,
@@ -67,7 +66,7 @@ const CalendarPage: React.FC = () => {
   const calendarDays = generateCalendarDays();
   
   const weekdays = Array.from({ length: 7 }).map((_, i) => {
-    const day = (i + (currentLocale.options?.weekStartsOn || 0)) % 7;
+    const day = (i + 1) % 7; // Start with Monday (1)
     return format(new Date(2023, 1, day + 1), viewMode === 'day' ? 'EEEE' : 'EEEEEE', { locale: currentLocale });
   });
   
@@ -135,8 +134,8 @@ const CalendarPage: React.FC = () => {
       case 'month':
         return format(currentDate, 'MMMM yyyy', { locale: currentLocale });
       case 'week':
-        const weekStart = startOfWeek(currentDate, { locale: currentLocale });
-        const weekEnd = endOfWeek(currentDate, { locale: currentLocale });
+        const weekStart = startOfWeek(currentDate, { locale: currentLocale, weekStartsOn: 1 });
+        const weekEnd = endOfWeek(currentDate, { locale: currentLocale, weekStartsOn: 1 });
         return `${format(weekStart, 'd MMM', { locale: currentLocale })} - ${format(weekEnd, 'd MMM yyyy', { locale: currentLocale })}`;
       case 'day':
         return format(currentDate, 'PPPP', { locale: currentLocale });

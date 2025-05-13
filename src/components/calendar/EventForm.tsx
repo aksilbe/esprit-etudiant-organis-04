@@ -145,6 +145,7 @@ export const EventForm: React.FC<EventFormProps> = ({ onClose, eventId }) => {
                   onSelect={field.onChange}
                   initialFocus
                   locale={currentLocale}
+                  weekStartsOn={1}
                   className={cn("p-3 pointer-events-auto")}
                 />
               </PopoverContent>
