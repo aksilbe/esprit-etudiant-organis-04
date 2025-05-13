@@ -7,18 +7,22 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { format, isToday, parseISO, isAfter, isFuture } from 'date-fns';
-import { Search, Plus, Calendar } from 'lucide-react';
+import { Search, Plus, Calendar, Pencil, Trash2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { TaskFilter, Task } from '@/types';
 import { TaskForm } from '@/components/tasks/TaskForm';
 import { Badge } from '@/components/ui/badge';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 
 const TasksPage: React.FC = () => {
   const { t } = useLanguage();
-  const { state, toggleTaskCompletion, setTaskFilter } = useData();
+  const { state, toggleTaskCompletion, setTaskFilter, deleteTask } = useData();
   const [searchQuery, setSearchQuery] = useState('');
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
+  const [editTaskId, setEditTaskId] = useState<string | null>(null);
+  const [deleteTaskId, setDeleteTaskId] = useState<string | null>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   
   const filteredTasks = state.tasks.filter(task => {
     // Search filter
@@ -73,6 +77,23 @@ const TasksPage: React.FC = () => {
   const getCategoryColor = (categoryId: string) => {
     const category = state.categories.find(c => c.id === categoryId);
     return category?.color || '#6B7280';
+  };
+
+  const handleEditTask = (taskId: string) => {
+    setEditTaskId(taskId);
+  };
+
+  const handleDeleteConfirmation = (taskId: string) => {
+    setDeleteTaskId(taskId);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const confirmDeleteTask = () => {
+    if (deleteTaskId) {
+      deleteTask(deleteTaskId);
+      setIsDeleteDialogOpen(false);
+      setDeleteTaskId(null);
+    }
   };
   
   return (
@@ -143,6 +164,23 @@ const TasksPage: React.FC = () => {
                     >
                       {t(`tasks.categories.${task.category}`)}
                     </Badge>
+
+                    <div className="flex gap-1 ml-auto">
+                      <Button 
+                        variant="ghost" 
+                        size="icon"
+                        onClick={() => handleEditTask(task.id)}
+                      >
+                        <Pencil className="h-4 w-4" />
+                      </Button>
+                      <Button 
+                        variant="ghost" 
+                        size="icon"
+                        onClick={() => handleDeleteConfirmation(task.id)}
+                      >
+                        <Trash2 className="h-4 w-4 text-destructive" />
+                      </Button>
+                    </div>
                   </div>
                   {task.description && (
                     <p className="text-sm text-muted-foreground mt-2">{task.description}</p>
@@ -161,6 +199,39 @@ const TasksPage: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Edit task dialog */}
+      <Dialog open={editTaskId !== null} onOpenChange={(open) => !open && setEditTaskId(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t('tasks.edit')}</DialogTitle>
+          </DialogHeader>
+          {editTaskId && (
+            <TaskForm 
+              taskId={editTaskId} 
+              onClose={() => setEditTaskId(null)} 
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete confirmation dialog */}
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t('tasks.deleteTask')}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {t('tasks.deleteTaskConfirm')}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDeleteTask} className="bg-destructive text-destructive-foreground">
+              {t('common.delete')}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
