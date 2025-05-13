@@ -293,15 +293,22 @@ const initialState: State = {
   taskFilter: 'all',
 };
 
-// Le problème vient potentiellement de cette fonction, 
-// où les données initiales pourraient être écrasées.
-// Modifions-la pour conserver les données initiales si aucune donnée n'est en localStorage
+// On simplifie cette fonction pour toujours utiliser les données initiales au premier chargement
 const loadState = (): State => {
   try {
+    // Au premier lancement, on veut forcer l'utilisation des données initiales
+    const isFirstLoad = !localStorage.getItem('isInitialized');
+    
+    if (isFirstLoad) {
+      // On marque que l'initialisation a été faite
+      localStorage.setItem('isInitialized', 'true');
+      return initialState;
+    }
+
+    // Pour les lancements suivants, on essaie de charger depuis localStorage
     const serializedTasks = localStorage.getItem('tasks');
     const serializedEvents = localStorage.getItem('events');
     
-    // On utilise les données initiales si rien n'est stocké en localStorage
     return {
       ...initialState,
       tasks: serializedTasks ? JSON.parse(serializedTasks) : initialState.tasks,
@@ -378,20 +385,10 @@ type DataContextType = {
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // On utilise maintenant directement les données initiales pour le premier rendu
   const [state, dispatch] = useReducer(reducer, loadState());
 
-  // Ajoutons un useEffect pour initialiser le localStorage avec les données initiales si nécessaire
-  useEffect(() => {
-    // Si le localStorage est vide, sauvegardons l'état initial
-    const tasksInStorage = localStorage.getItem('tasks');
-    const eventsInStorage = localStorage.getItem('events');
-    
-    if (!tasksInStorage || !eventsInStorage) {
-      console.log('Initializing localStorage with default data');
-      saveState(state);
-    }
-  }, []);
-
+  // Sauvegardons l'état à chaque changement
   useEffect(() => {
     saveState(state);
   }, [state.tasks, state.events]);
