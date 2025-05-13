@@ -26,6 +26,13 @@ export const translations = {
         tasksCompleted: "Tâches terminées",
         tasksRemaining: "Tâches restantes",
         studyTime: "Temps d'étude"
+      },
+      charts: {
+        completedTasks: "Tâches terminées",
+        completedTasksDesc: "Progression des tâches terminées",
+        taskCategories: "Types de tâches",
+        taskCategoriesDesc: "Répartition par catégorie",
+        completed: "Terminées"
       }
     },
     tasks: {
@@ -59,7 +66,10 @@ export const translations = {
         project: "Projet",
         reading: "Lecture",
         other: "Autre"
-      }
+      },
+      edit: "Modifier",
+      deleteTask: "Supprimer la tâche",
+      deleteTaskConfirm: "Êtes-vous sûr de vouloir supprimer cette tâche ?"
     },
     calendar: {
       today: "Aujourd'hui",
@@ -67,6 +77,10 @@ export const translations = {
       week: "Semaine",
       day: "Jour",
       addEvent: "Ajouter un événement",
+      noEvents: "Pas d'événements ce jour",
+      editEvent: "Modifier l'événement",
+      deleteEvent: "Supprimer l'événement",
+      deleteEventConfirm: "Êtes-vous sûr de vouloir supprimer cet événement ?",
       event: {
         title: "Titre",
         description: "Description",
@@ -107,6 +121,20 @@ export const translations = {
         light: "Clair",
         dark: "Sombre",
         system: "Système"
+      },
+      notificationsSettings: {
+        tasks: {
+          title: "Tâches",
+          description: "Recevoir des notifications pour les tâches à venir"
+        },
+        events: {
+          title: "Événements",
+          description: "Recevoir des notifications pour les événements à venir"
+        },
+        pomodoro: {
+          title: "Minuteur Pomodoro",
+          description: "Recevoir des notifications pour le minuteur Pomodoro"
+        }
       }
     },
     common: {
@@ -117,7 +145,8 @@ export const translations = {
       edit: "Modifier",
       add: "Ajouter",
       search: "Rechercher",
-      close: "Fermer"
+      close: "Fermer",
+      more: "plus"
     }
   },
   en: {
@@ -146,6 +175,13 @@ export const translations = {
         tasksCompleted: "Tasks completed",
         tasksRemaining: "Tasks remaining",
         studyTime: "Study time"
+      },
+      charts: {
+        completedTasks: "Completed Tasks",
+        completedTasksDesc: "Task completion progress",
+        taskCategories: "Task Categories",
+        taskCategoriesDesc: "Distribution by category",
+        completed: "Completed"
       }
     },
     tasks: {
@@ -179,7 +215,10 @@ export const translations = {
         project: "Project",
         reading: "Reading",
         other: "Other"
-      }
+      },
+      edit: "Edit",
+      deleteTask: "Delete Task",
+      deleteTaskConfirm: "Are you sure you want to delete this task?"
     },
     calendar: {
       today: "Today",
@@ -187,6 +226,10 @@ export const translations = {
       week: "Week",
       day: "Day",
       addEvent: "Add Event",
+      noEvents: "No events for this day",
+      editEvent: "Edit Event",
+      deleteEvent: "Delete Event",
+      deleteEventConfirm: "Are you sure you want to delete this event?",
       event: {
         title: "Title",
         description: "Description",
@@ -227,6 +270,20 @@ export const translations = {
         light: "Light",
         dark: "Dark",
         system: "System"
+      },
+      notificationsSettings: {
+        tasks: {
+          title: "Tasks",
+          description: "Receive notifications for upcoming tasks"
+        },
+        events: {
+          title: "Events",
+          description: "Receive notifications for upcoming events"
+        },
+        pomodoro: {
+          title: "Pomodoro Timer",
+          description: "Receive notifications for Pomodoro timer"
+        }
       }
     },
     common: {
@@ -237,7 +294,8 @@ export const translations = {
       edit: "Edit",
       add: "Add",
       search: "Search",
-      close: "Close"
+      close: "Close",
+      more: "more"
     }
   },
   es: {
@@ -266,6 +324,13 @@ export const translations = {
         tasksCompleted: "Tareas completadas",
         tasksRemaining: "Tareas pendientes",
         studyTime: "Tiempo de estudio"
+      },
+      charts: {
+        completedTasks: "Tareas Completadas",
+        completedTasksDesc: "Progreso de tareas completadas",
+        taskCategories: "Categorías de tareas",
+        taskCategoriesDesc: "Distribución por categoría",
+        completed: "Completadas"
       }
     },
     tasks: {
@@ -299,7 +364,10 @@ export const translations = {
         project: "Proyecto",
         reading: "Lectura",
         other: "Otro"
-      }
+      },
+      edit: "Editar",
+      deleteTask: "Eliminar tarea",
+      deleteTaskConfirm: "¿Estás seguro de que deseas eliminar esta tarea?"
     },
     calendar: {
       today: "Hoy",
@@ -307,6 +375,10 @@ export const translations = {
       week: "Semana",
       day: "Día",
       addEvent: "Añadir Evento",
+      noEvents: "No hay eventos para este día",
+      editEvent: "Editar Evento",
+      deleteEvent: "Eliminar Evento",
+      deleteEventConfirm: "¿Estás seguro de que deseas eliminar este evento?",
       event: {
         title: "Título",
         description: "Descripción",
@@ -347,6 +419,20 @@ export const translations = {
         light: "Claro",
         dark: "Oscuro",
         system: "Sistema"
+      },
+      notificationsSettings: {
+        tasks: {
+          title: "Tareas",
+          description: "Recibir notificaciones para tareas próximas"
+        },
+        events: {
+          title: "Eventos",
+          description: "Recibir notificaciones para eventos próximos"
+        },
+        pomodoro: {
+          title: "Temporizador Pomodoro",
+          description: "Recibir notificaciones para el temporizador Pomodoro"
+        }
       }
     },
     common: {
@@ -357,7 +443,8 @@ export const translations = {
       edit: "Editar",
       add: "Añadir",
       search: "Buscar",
-      close: "Cerrar"
+      close: "Cerrar",
+      more: "más"
     }
   }
 };

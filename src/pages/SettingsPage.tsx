@@ -52,9 +52,9 @@ const SettingsPage: React.FC = () => {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <Label htmlFor="task-notifications">
-                  <div>{t('tasks.title')}</div>
+                  <div>{t('settings.notificationsSettings.tasks.title')}</div>
                   <div className="text-sm text-muted-foreground">
-                    Receive notifications for upcoming tasks
+                    {t('settings.notificationsSettings.tasks.description')}
                   </div>
                 </Label>
                 <Switch id="task-notifications" defaultChecked />
@@ -62,9 +62,9 @@ const SettingsPage: React.FC = () => {
               
               <div className="flex items-center justify-between">
                 <Label htmlFor="event-notifications">
-                  <div>{t('calendar.title')}</div>
+                  <div>{t('settings.notificationsSettings.events.title')}</div>
                   <div className="text-sm text-muted-foreground">
-                    Receive notifications for upcoming events
+                    {t('settings.notificationsSettings.events.description')}
                   </div>
                 </Label>
                 <Switch id="event-notifications" defaultChecked />
@@ -72,9 +72,9 @@ const SettingsPage: React.FC = () => {
               
               <div className="flex items-center justify-between">
                 <Label htmlFor="pomodoro-notifications">
-                  <div>{t('pomodoro.title')}</div>
+                  <div>{t('settings.notificationsSettings.pomodoro.title')}</div>
                   <div className="text-sm text-muted-foreground">
-                    Receive notifications for Pomodoro timer
+                    {t('settings.notificationsSettings.pomodoro.description')}
                   </div>
                 </Label>
                 <Switch id="pomodoro-notifications" defaultChecked />

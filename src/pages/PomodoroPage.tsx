@@ -19,6 +19,8 @@ const PomodoroPage: React.FC = () => {
     shortBreakDuration: 5,
     longBreakDuration: 15,
   });
+  const [activeTab, setActiveTab] = useState<string>('timer');
+  const [activeMode, setActiveMode] = useState<PomodoroMode>('work');
   
   const initialTime = useRef(time);
   const timer = useRef<number | null>(null);
@@ -93,6 +95,11 @@ const PomodoroPage: React.FC = () => {
     setIsActive(false);
     setTime(initialTime.current);
   };
+
+  const handleModeChange = (newMode: PomodoroMode) => {
+    setMode(newMode);
+    setActiveMode(newMode);
+  };
   
   const formatTime = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
@@ -115,7 +122,11 @@ const PomodoroPage: React.FC = () => {
       
       <Card>
         <CardContent className="pt-6">
-          <Tabs defaultValue="timer">
+          <Tabs 
+            defaultValue="timer"
+            value={activeTab} 
+            onValueChange={setActiveTab}
+          >
             <TabsList className="mx-auto mb-6">
               <TabsTrigger value="timer">Timer</TabsTrigger>
               <TabsTrigger value="settings">{t('pomodoro.settings')}</TabsTrigger>
@@ -126,22 +137,22 @@ const PomodoroPage: React.FC = () => {
                 <TabsList className="w-full">
                   <TabsTrigger 
                     value="work" 
-                    onClick={() => setMode('work')}
-                    className={mode === 'work' ? 'bg-primary text-primary-foreground' : ''}
+                    onClick={() => handleModeChange('work')}
+                    className={activeMode === 'work' ? 'bg-primary text-primary-foreground' : ''}
                   >
                     {t('pomodoro.work')}
                   </TabsTrigger>
                   <TabsTrigger 
                     value="shortBreak" 
-                    onClick={() => setMode('shortBreak')}
-                    className={mode === 'shortBreak' ? 'bg-primary text-primary-foreground' : ''}
+                    onClick={() => handleModeChange('shortBreak')}
+                    className={activeMode === 'shortBreak' ? 'bg-primary text-primary-foreground' : ''}
                   >
                     {t('pomodoro.shortBreak')}
                   </TabsTrigger>
                   <TabsTrigger 
                     value="longBreak" 
-                    onClick={() => setMode('longBreak')}
-                    className={mode === 'longBreak' ? 'bg-primary text-primary-foreground' : ''}
+                    onClick={() => handleModeChange('longBreak')}
+                    className={activeMode === 'longBreak' ? 'bg-primary text-primary-foreground' : ''}
                   >
                     {t('pomodoro.longBreak')}
                   </TabsTrigger>

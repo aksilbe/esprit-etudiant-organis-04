@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, startOfWeek, endOfWeek, isToday, isSameMonth, isSameDay, parseISO } from 'date-fns';
+import { format, startOfMonth, endOfMonth, eachDayOfInterval, startOfWeek, endOfWeek, isToday, isSameMonth, isSameDay, parseISO, addDays, startOfDay, endOfDay } from 'date-fns';
 import { fr, enUS, es } from 'date-fns/locale';
 import { EventForm } from '@/components/calendar/EventForm';
 import { cn } from '@/lib/utils';
@@ -23,6 +23,7 @@ const CalendarPage: React.FC = () => {
   const [editEventId, setEditEventId] = useState<string | null>(null);
   const [deleteEventId, setDeleteEventId] = useState<string | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<'month' | 'week' | 'day'>('month');
   
   const localeMap = {
     fr: fr,
@@ -32,25 +33,72 @@ const CalendarPage: React.FC = () => {
   
   const currentLocale = localeMap[language as keyof typeof localeMap] || enUS;
   
-  // Generate calendar days
-  const monthStart = startOfMonth(currentDate);
-  const monthEnd = endOfMonth(currentDate);
-  const calendarStart = startOfWeek(monthStart, { locale: currentLocale });
-  const calendarEnd = endOfWeek(monthEnd, { locale: currentLocale });
+  // Generate calendar days based on view mode
+  const generateCalendarDays = () => {
+    switch (viewMode) {
+      case 'month': {
+        const monthStart = startOfMonth(currentDate);
+        const monthEnd = endOfMonth(currentDate);
+        const calendarStart = startOfWeek(monthStart, { locale: currentLocale });
+        const calendarEnd = endOfWeek(monthEnd, { locale: currentLocale });
+        
+        return eachDayOfInterval({
+          start: calendarStart,
+          end: calendarEnd,
+        });
+      }
+      case 'week': {
+        const weekStart = startOfWeek(currentDate, { locale: currentLocale });
+        const weekEnd = endOfWeek(currentDate, { locale: currentLocale });
+        
+        return eachDayOfInterval({
+          start: weekStart,
+          end: weekEnd,
+        });
+      }
+      case 'day': {
+        return [currentDate];
+      }
+      default:
+        return [];
+    }
+  };
   
-  const calendarDays = eachDayOfInterval({
-    start: calendarStart,
-    end: calendarEnd,
-  });
+  const calendarDays = generateCalendarDays();
   
   const weekdays = Array.from({ length: 7 }).map((_, i) => {
     const day = (i + (currentLocale.options?.weekStartsOn || 0)) % 7;
-    return format(new Date(2023, 1, day + 1), 'EEEEEE', { locale: currentLocale });
+    return format(new Date(2023, 1, day + 1), viewMode === 'day' ? 'EEEE' : 'EEEEEE', { locale: currentLocale });
   });
   
   const goToToday = () => setCurrentDate(new Date());
-  const goToPreviousMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
-  const goToNextMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+  const goToPrevious = () => {
+    switch (viewMode) {
+      case 'month':
+        setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+        break;
+      case 'week':
+        setCurrentDate(addDays(currentDate, -7));
+        break;
+      case 'day':
+        setCurrentDate(addDays(currentDate, -1));
+        break;
+    }
+  };
+  
+  const goToNext = () => {
+    switch (viewMode) {
+      case 'month':
+        setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+        break;
+      case 'week':
+        setCurrentDate(addDays(currentDate, 7));
+        break;
+      case 'day':
+        setCurrentDate(addDays(currentDate, 1));
+        break;
+    }
+  };
   
   const eventsOnDay = (date: Date) => {
     return state.events.filter(event => isSameDay(parseISO(event.date), date));
@@ -81,11 +129,30 @@ const CalendarPage: React.FC = () => {
       setDeleteEventId(null);
     }
   };
+
+  const getViewTitle = () => {
+    switch (viewMode) {
+      case 'month':
+        return format(currentDate, 'MMMM yyyy', { locale: currentLocale });
+      case 'week':
+        const weekStart = startOfWeek(currentDate, { locale: currentLocale });
+        const weekEnd = endOfWeek(currentDate, { locale: currentLocale });
+        return `${format(weekStart, 'd MMM', { locale: currentLocale })} - ${format(weekEnd, 'd MMM yyyy', { locale: currentLocale })}`;
+      case 'day':
+        return format(currentDate, 'PPPP', { locale: currentLocale });
+      default:
+        return '';
+    }
+  };
+  
+  const handleViewChange = (view: string) => {
+    setViewMode(view as 'month' | 'week' | 'day');
+  };
   
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h1 className="text-3xl font-bold">{t('calendar.today')}</h1>
+        <h1 className="text-3xl font-bold">{t('calendar.title')}</h1>
         <Dialog open={isAddEventOpen} onOpenChange={setIsAddEventOpen}>
           <DialogTrigger asChild>
             <Button>
@@ -102,29 +169,29 @@ const CalendarPage: React.FC = () => {
         </Dialog>
       </div>
       
-      <Tabs defaultValue="month" className="w-full">
+      <Tabs value={viewMode} onValueChange={handleViewChange} className="w-full">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
           <TabsList>
             <TabsTrigger value="month">{t('calendar.month')}</TabsTrigger>
-            <TabsTrigger value="week" disabled>{t('calendar.week')}</TabsTrigger>
-            <TabsTrigger value="day" disabled>{t('calendar.day')}</TabsTrigger>
+            <TabsTrigger value="week">{t('calendar.week')}</TabsTrigger>
+            <TabsTrigger value="day">{t('calendar.day')}</TabsTrigger>
           </TabsList>
           
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={goToPreviousMonth}>
+            <Button variant="outline" size="sm" onClick={goToPrevious}>
               &#8592;
             </Button>
             <Button variant="outline" onClick={goToToday}>
               {t('calendar.today')}
             </Button>
-            <Button variant="outline" size="sm" onClick={goToNextMonth}>
+            <Button variant="outline" size="sm" onClick={goToNext}>
               &#8594;
             </Button>
           </div>
         </div>
         
         <div className="text-center text-lg font-medium mb-4">
-          {format(currentDate, 'MMMM yyyy', { locale: currentLocale })}
+          {getViewTitle()}
         </div>
         
         <TabsContent value="month" className="mt-0">
@@ -177,6 +244,122 @@ const CalendarPage: React.FC = () => {
                   </div>
                 </div>
               ))}
+            </div>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="week" className="mt-0">
+          <Card className="p-4">
+            <div className="grid grid-cols-7 gap-1">
+              {weekdays.map((day, i) => (
+                <div key={i} className="text-center text-sm font-medium py-1">
+                  {day}
+                </div>
+              ))}
+              
+              {calendarDays.map((day, i) => (
+                <div
+                  key={i}
+                  className={cn(
+                    "min-h-32 p-1 border rounded-md cursor-pointer hover:bg-accent/50 transition-colors",
+                    isSameDay(day, selectedDay || new Date(0)) && "bg-accent/50",
+                  )}
+                  onClick={() => handleDayClick(day)}
+                >
+                  <div className="flex flex-col h-full">
+                    <div 
+                      className={cn(
+                        "calendar-day inline-flex h-6 w-6 items-center justify-center text-sm",
+                        isToday(day) && "today bg-primary text-primary-foreground rounded-full"
+                      )}
+                    >
+                      {format(day, 'd')}
+                    </div>
+                    <div className="flex-1 overflow-auto mt-1">
+                      {eventsOnDay(day).map(event => (
+                        <div 
+                          key={event.id}
+                          className="text-xs p-1 mb-1 rounded truncate"
+                          style={{ 
+                            backgroundColor: event.color || '#3B82F6',
+                            color: 'white'
+                          }}
+                        >
+                          <div className="font-semibold">{event.title}</div>
+                          {event.startTime && <div>{event.startTime}</div>}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="day" className="mt-0">
+          <Card className="p-4">
+            <div className="flex flex-col">
+              <div className="text-center text-lg font-medium mb-4">
+                {format(currentDate, 'EEEE, MMMM d', { locale: currentLocale })}
+              </div>
+              
+              <div 
+                className="min-h-[50vh] p-4 border rounded-md cursor-pointer"
+                onClick={() => handleDayClick(currentDate)}
+              >
+                {eventsOnDay(currentDate).length > 0 ? (
+                  <div className="space-y-2">
+                    {eventsOnDay(currentDate).map(event => (
+                      <div 
+                        key={event.id}
+                        className="p-2 rounded flex justify-between items-start"
+                        style={{ 
+                          backgroundColor: `${event.color}20` || '#3B82F620',
+                          borderLeft: `4px solid ${event.color || '#3B82F6'}`
+                        }}
+                      >
+                        <div>
+                          <div className="font-semibold">{event.title}</div>
+                          {event.description && <div className="text-sm text-muted-foreground">{event.description}</div>}
+                          <div className="text-sm">
+                            {event.startTime && event.endTime 
+                              ? `${event.startTime} - ${event.endTime}` 
+                              : event.startTime || ''}
+                          </div>
+                          {event.location && <div className="text-sm">{event.location}</div>}
+                        </div>
+                        <div className="flex space-x-1">
+                          <Button 
+                            variant="ghost" 
+                            size="icon"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleEditEvent(event.id);
+                            }}
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                          <Button 
+                            variant="ghost" 
+                            size="icon"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteConfirmation(event.id);
+                            }}
+                          >
+                            <Trash2 className="h-4 w-4 text-destructive" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center h-full text-muted-foreground">
+                    {t('calendar.noEvents')}
+                  </div>
+                )}
+              </div>
             </div>
           </Card>
         </TabsContent>
